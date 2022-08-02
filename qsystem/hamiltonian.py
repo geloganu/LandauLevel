@@ -3,6 +3,9 @@ from constants import *
 from particles import *
 
 
+import time
+
+
 #hamiltonian builder
 class hamiltonian:
     def __init__(self, N, spacing, V, extent, dim = 2): 
@@ -28,7 +31,7 @@ class hamiltonian:
             raise Exception('Particle number N must be of int type.')
         
         #ensure dimensions is correct
-        if dim in range(1,3,1):
+        if dim not in range(1,3,1):
             raise Exception('Dimension must be either 1, 2 or 3')
 
         if N == 1:
@@ -46,6 +49,22 @@ class hamiltonian:
         V = self.potential(self.particle_system)
 
         return V
+
+    def print(self):
+        print(self)
+
+    def solve(self, N_solution: int):
+
+        H = self.T + self.V
+        print("Hamiltonian constructed...")
+        t0 = time.time()
+
+        #eigVal, eigVec = iterate(H, )
+
+
+
+        print("Took", time.time() - t0)
+        return self.eigenstates
 
 
 
