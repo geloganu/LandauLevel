@@ -39,13 +39,16 @@ class single_particle:
 
             self.x = np.kron(I,x)
             self.y = np.kron(y,I)
+            #print('x,y space defined...')
 
             #delta matrix foundation
             delta_matrix = (np.diag(np.ones(H.spacing-1),1) - np.diag(np.ones(H.spacing-1),-1))*1/(2*H.dx)
-
+            #print('delta matrix constructed')
+            
             #x, y momentum operators (finite difference matrix)
             self.px = np.kron(I, - hbar *1j * delta_matrix)
             self.py = np.kron(- hbar *1j * delta_matrix, I)
+            #print('momentum matrix constructed')
 
             self.I = np.kron(I,I)
     
@@ -55,14 +58,13 @@ class single_particle:
 
         if H.N == 1:
             T = T_temp
+            print('kinetic term size',len(T))
         
         elif H.N == 2:
             T = np.kron(T_temp,I) + np.kron(I,T_temp)
         
         return T
             
-
-
 '''    
 class multi_particle:
     def __init__(self, m = me, spin = None):

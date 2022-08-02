@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import linalg
 import scipy
+from scipy import linalg
 
 #normalization
 def normalize(v):
@@ -28,15 +29,16 @@ def iterate(H, x, m: int):
     alpha = np.dot(w.conj(), V[:,0]) #a0 for tridiagonal matrix
     T[0,0] = alpha
     w = w - alpha*V[:,0] #gram-schmidt
-    print('-----------------------------')
-    print('j=0')
-    print('w', w)
+    #print('-----------------------------')
+    #print('j=0')
+    #print('w', w)
 
     """subsequent iterations"""
     for j in range(1,m):
-        print('-----------------------------')
-        print('j=',j)
-        print('ok')
+        #print('-----------------------------')
+        #print('j=',j)
+        #print('ok')
+        
         beta = np.sqrt(np.dot(w,w))
         T[j-1,j] = beta
         T[j,j-1] = beta
@@ -74,7 +76,7 @@ def tri_eig_decompose(T):
     for i in range(0,n-1):
         off_diag = np.append(off_diag, T[i,i+1])
         
-    scipy.linalg.eigh_tridiagonal(diag, off_diag)
+    w,v = scipy.linalg.eigh_tridiagonal(diag, off_diag)
     return w, v
     
     
