@@ -3,24 +3,24 @@ from constants import *
 
 #hamiltonian builder
 class hamiltonian:
-    def __init__(self, N, grid_points, V, extent, dim): 
+    def __init__(self, N, dim = 2, spacing, V, extent): 
         '''
         args:
         N: number of particles
-        grid_points: number of intervals on meshgrid
+        spacing: number of intervals/gridpoints on meshgrid
         V: potential term
         extent: spacial extent (come back for units)
         dim: dimensions
         '''
 
         self.N = N
-        self.grid_points = grid_points
+        self.spacing = spacing
         self.V = V
         self.dim = dim
+        self.observable_count = 0
 
         #dx finite difference value
-        self.dx = extent/grid_points
-
+        self.dx = extent/spacing
 
         #ensure N is an integer
         if type(N) != int:
@@ -30,4 +30,4 @@ class hamiltonian:
         if dim in range(1,3,1):
             raise Exception('Dimension must be either 1, 2 or 3')
 
-    
+
