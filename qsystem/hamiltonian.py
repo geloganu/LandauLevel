@@ -1,7 +1,7 @@
 import numpy as np
-from qsystem.constants import *
-from qsystem.particles import *
-from qsystem.landau_potential import *
+from constants import *
+from particles import *
+
 
 #hamiltonian builder
 class hamiltonian:
@@ -40,6 +40,12 @@ class hamiltonian:
         #construct Hamiltonian H = T+V (if py and px are not second order, they appear in the potential term V)
         self.T = self.particle.kinetic_term(self)
 
-        self.V = self.particle.potential_term(self)
+        self.V = self.potential_term(self)
+
+    def potential_term(self):
+        V = self.potential(self.particle_system)
+
+        return V
+
 
 

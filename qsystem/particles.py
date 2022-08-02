@@ -1,7 +1,6 @@
 import numpy as np
-from qsystem.hamiltonian import *
-from qsystem.constants import *
-from 
+from hamiltonian import *
+from constants import *
 
 #particle builder for hamiltonian builder
 
@@ -61,10 +60,6 @@ class single_particle:
             T = np.kron(T_temp,I) + np.kron(I,T_temp)
         
         return T
-    
-    def potential_term(self,H):
-        return
-
             
 
 
