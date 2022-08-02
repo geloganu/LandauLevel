@@ -2,7 +2,7 @@ import numpy as np
 
 pi = np.pi
 
-#physics constants (in SI)
+#physical constants file
 h = 6.58e-16
 hbar = h/(2*pi)
 me = 9.1093837e-31
