@@ -2,6 +2,7 @@ import numpy as np
 from constants import *
 from particles import *
 from lanczos import *
+from scipy.sparse.linalg import eigsh
 
 import time
 
@@ -76,11 +77,14 @@ class hamiltonian:
         #print("Hamiltonian constructed...")
 
         t0 = time.time()
-        x = np.transpose(np.ones(self.spacing))
+
+        """
+        x = np.transpose(np.ones(self.spacing**2))
         T, V = iterate(H, x, iteration)
 
         eigVal, eigVec = tri_eig_decompose(T)
-
+        """
+        eigVal, eigVec = eigsh(H, k = iteration)
         print("Took", time.time() - t0)
         return eigVal, eigVec
 

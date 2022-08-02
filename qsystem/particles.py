@@ -1,6 +1,9 @@
 import numpy as np
 from hamiltonian import *
 from constants import *
+from scipy.sparse import diags
+from scipy.sparse import kron
+from scipy.sparse import eye
 
 #particle builder for hamiltonian builder
 
@@ -26,6 +29,24 @@ class single_particle:
             self.x, self.y = np.meshgrid(x,y)
             
     def matrix_operators(self, H):
+        H.ndim = 2
+
+        x = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
+        y = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
+        I = eye(H.spacing)
+
+        self.x = kron(I,x)
+        self.y = kron(y,I)
+
+        diff_x = diags([-1., 0., 1.], [-1, 0, 1] , shape=(H.spacing, H.spacing))*1/(2*H.dx)
+        diff_y = diags([-1., 0., 1.], [-1, 0, 1] , shape=(H.spacing, H.spacing))*1/(2*H.dx)
+
+        self.px = kron(I, - hbar *1j * diff_y)
+        self.py = kron(- hbar *1j * diff_x, I)
+        
+        self.I = kron(I,I)
+
+        '''
         if H.dim == 2:
             #defining x and y coord
             x_space = np.linspace(-H.extent/2, H.extent/2, H.spacing)
@@ -43,6 +64,7 @@ class single_particle:
 
             #delta matrix foundation
             delta_matrix = (np.diag(np.ones(H.spacing-1),1) - np.diag(np.ones(H.spacing-1),-1))*1/(2*H.dx)
+
             #print('delta matrix constructed')
             
             #x, y momentum operators (finite difference matrix)
@@ -51,16 +73,15 @@ class single_particle:
             #print('momentum matrix constructed')
 
             self.I = np.kron(I,I)
-    
+        '''
     def kinetic_term(self, H):
         I = np.eye(H.spacing)
         T_temp = 0.5*hbar**2/(2*me) * (-np.diag(np.ones(H.spacing-1),-1)+2*np.diag(np.ones(H.spacing),0)+np.diag(np.ones(H.spacing-1),1))
 
-        if H.N == 1:
+        if H.dim == 1:
             T = T_temp
-            print('kinetic term size',len(T))
         
-        elif H.N == 2:
+        elif H.dim == 2:
             T = np.kron(T_temp,I) + np.kron(I,T_temp)
         
         return T
