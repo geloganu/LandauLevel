@@ -75,6 +75,16 @@ class single_particle:
             self.I = np.kron(I,I)
         '''
     def kinetic_term(self, H):
+
+        I = eye(H.spacing)
+        T_ =  diags([-2., 1., 1.], [0,-1, 1] , shape=(H.spacing, H.spacing))*-0.5 /(self.m*H.dx**2)
+        if H.dim ==1:
+            T = T_
+
+        elif H.dim==2:
+            T =  kron(T_,I) + kron(I,T_)
+        return T
+        """
         I = np.eye(H.spacing)
         T_temp = 0.5*hbar**2/(2*me) * (-np.diag(np.ones(H.spacing-1),-1)+2*np.diag(np.ones(H.spacing),0)+np.diag(np.ones(H.spacing-1),1))
 
@@ -83,7 +93,7 @@ class single_particle:
         
         elif H.dim == 2:
             T = np.kron(T_temp,I) + np.kron(I,T_temp)
-        
+        """
         return T
             
 '''    

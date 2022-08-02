@@ -49,9 +49,8 @@ class hamiltonian:
 
         self.V = self.potential_term()
         #print('V matrix initialized...')
-
-        self.H = self.T + self.V
-
+        print(self.T)
+        print(self.V)
 
     def potential_term(self):
         V = self.potential(self.particle)
