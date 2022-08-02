@@ -35,7 +35,7 @@ class hamiltonian:
         if N == 1:
             self.single_particle.build_operators(self)
         elif N == 2:
-            self.multi_particle.build_operators(self, N)
+            self.multi_particle.build_operators(self)
         
 
 
