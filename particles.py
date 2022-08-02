@@ -15,7 +15,7 @@ class single_particle:
         self.m = m
         self.spin = spin
 
-    def coord_space(self, H):
+    def build_coord_space(self, H):
         if H.dim ==1:
             self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             H.observable_count = 1
@@ -24,8 +24,10 @@ class single_particle:
             x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             y = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             self.x, self.y = np.meshgrid(x,y)
-            H.bservable_count = 2
-    
+            
+    def build_operators(self, H):
+        
+'''    
 class multi_particle:
     def __init__(self, m = me, spin = None):
         '''
@@ -37,7 +39,7 @@ class multi_particle:
         self.m = m
         self.spin = spin
 
-    def coord_space(self, H, N):
+    def coord_space(self, H):
         if H.dim ==1:
             self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             H.observable_count = 1
@@ -47,3 +49,4 @@ class multi_particle:
             y = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             self.x, self.y = np.meshgrid(x,y)
             H.bservable_count = 2
+'''
