@@ -5,15 +5,13 @@ from particles import *
 #hamiltonian builder
 class hamiltonian:
     def __init__(self, N, spacing, V, extent, dim = 2): 
-        '''
-        args:
-        N: number of particles
-        spacing: number of intervals/gridpoints on meshgrid
-        V: potential term
-        extent: spacial extent (come back for units)
-        dim: dimensions
-        '''
-
+        #args:
+        #N: number of particles
+        #spacing: number of intervals/gridpoints on meshgrid
+        #V: potential term
+        #extent: spacial extent (come back for units)
+        #dim: dimensions
+        
         self.N = N
         self.spacing = spacing
         self.V = V
@@ -33,10 +31,14 @@ class hamiltonian:
             raise Exception('Dimension must be either 1, 2 or 3')
 
         if N == 1:
-            self.single_particle.matrix_operators(self)
+            self.particle = single_particle()
         elif N == 2:
-            self.multi_particle.matrix_operators(self)
-        
+            self.particle = multi_particle()
 
+        self.particle.matrix_operators(self)
+        #construct Hamiltonian H = T+V (if py and px are not second order, they appear in the potential term V)
+        self.T = self.particle.kinetic_term(self)
+
+        self.V = self.particle.potential_term(self)
 
 
