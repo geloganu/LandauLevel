@@ -15,7 +15,7 @@ class single_particle:
         self.m = m
         self.spin = spin
 
-    def coord_space(self, H):
+    def coord_space(self, H): #deprecated
         if H.dim ==1:
             self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             H.observable_count = 1
@@ -48,6 +48,21 @@ class single_particle:
             self.py = np.kron(- hbar *1j * delta_matrix, I)
 
             self.I = np.kron(I,I)
+    
+    def kinetic_term(self, H):
+        I = np.eye(H.spacing)
+        T_temp = 0.5*hbar**2/(2*me) * (-np.diag(np.ones(H.spacing-1),-1)+2*np.diag(np.ones(H.spacing),0)+np.diag(np.ones(H.spacing-1),1))
+
+        if H.N == 1:
+            T = T_temp
+        
+        elif H.N == 2:
+            T = np.kron(T_temp,I) + np.kron(I,T_temp)
+        
+        return T
+    
+    def potential_term(self,H):
+        pass
 
             
 
@@ -60,11 +75,11 @@ class single_particle:
 '''    
 class multi_particle:
     def __init__(self, m = me, spin = None):
-        '''
+
         N: number of particles (for N != 1)
         m: mass of electron set to %me by default
         spin: set to 'None' if spin polarized
-        '''
+
 
         self.m = m
         self.spin = spin
