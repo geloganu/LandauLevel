@@ -33,9 +33,9 @@ class hamiltonian:
             raise Exception('Dimension must be either 1, 2 or 3')
 
         if N == 1:
-            self.single_particle.build_operators(self)
+            self.single_particle.matrix_operators(self)
         elif N == 2:
-            self.multi_particle.build_operators(self)
+            self.multi_particle.matrix_operators(self)
         
 
 
