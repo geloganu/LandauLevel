@@ -15,7 +15,7 @@ class single_particle:
         self.m = m
         self.spin = spin
 
-    def build_coord_space(self, H):
+    def coord_space(self, H):
         if H.dim ==1:
             self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             H.observable_count = 1
@@ -25,8 +25,38 @@ class single_particle:
             y = np.linspace(-H.extent/2, H.extent/2, H.spacing)
             self.x, self.y = np.meshgrid(x,y)
             
-    def build_operators(self, H):
-        
+    def matrix_operators(self, H):
+        if H.dim == 2:
+            #defining x and y coord
+            x_space = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+            y_space = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+
+            #creating respective matrix
+            x = np.diag(x_space,0)
+            y = np.diag(y_space,0)
+
+            I = np.eye(H.spacing)
+
+            self.x = np.kron(I,x)
+            self.y = np.kron(y,I)
+
+            #delta matrix foundation
+            delta_matrix = (np.diag(np.ones(H.spacing-1),1) - np.diag(np.ones(H.spacing-1),-1))*1/(2*H.dx)
+
+            #x, y momentum operators (finite difference matrix)
+            self.px = np.kron(I, - hbar *1j * delta_matrix)
+            self.py = np.kron(- hbar *1j * delta_matrix, I)
+
+            self.I = np.kron(I,I)
+
+            
+
+
+
+
+
+
+
 '''    
 class multi_particle:
     def __init__(self, m = me, spin = None):
