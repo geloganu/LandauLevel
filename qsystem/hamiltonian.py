@@ -82,4 +82,6 @@ class hamiltonian:
         
         eigVal, eigVec = eigsh(H, k = max_state, which = 'LM', sigma = 0)
         print("Took", time.time() - t0)
-        return eigVal, eigVec
+
+        #normalizing
+        return eigVal/eV, eigVec/np.sqrt(self.dx**self.dim)
