@@ -10,7 +10,7 @@ import time
 
 #hamiltonian builder
 class hamiltonian:
-    def __init__(self, N, spacing, potential, extent, dim = 2): 
+    def __init__(self, N, spacing, potential, extent, dim = 2, E_min = 0): 
         #args:
         #N: number of particles
         #spacing: number of intervals/gridpoints on meshgrid
@@ -23,6 +23,7 @@ class hamiltonian:
         self.extent = extent
         self.observable_count = 0
         self.dim = dim
+        self.E_min = E_min
         #print('Variables defined...')
 
         #dx finite difference value
@@ -62,6 +63,9 @@ class hamiltonian:
     def denseV(self):
         return self.V.todense()
 
+    def matrix(self):
+        return self.T + self.V
+
     def solve(self, max_state):
         #args:
         #iteration (m): number of iterations to perform
@@ -79,5 +83,3 @@ class hamiltonian:
         eigVal, eigVec = eigsh(H, k = max_state, which = 'LM', sigma = 0)
         print("Took", time.time() - t0)
         return eigVal, eigVec
-
-

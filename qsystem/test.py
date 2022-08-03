@@ -3,15 +3,28 @@ from constants import *
 from hamiltonian import *
 from particles import *
 
-def harmonic_oscillator(particle):
+def landau(particle):
+    #constants
+    #e = electron charge
+    #B = field strength
+    #m = me
+    
+    #constants
+    B = 150*T
+    m = me
+    
+    #cyclotron frequency omega = eB/m
+    omega = e*B/m
+    
+    #angular momentum term
+    Lz = -particle.px @ particle.y + particle.py @ particle.x
+    
+    #x^2 + y^2
+    coordTerm = np.dot(particle.x,particle.x)+np.dot(particle.y,particle.y)
+    
+    return -omega*Lz/2 + m/2*(omega/2)**2*coordTerm
 
-	kx = 0.02 
-	ky = 0.02
-	return 0.5 * kx * particle.x**2   +    0.5 * ky * particle.y**2 
+H = hamiltonian(N = 1, spacing = 100, potential = landau, extent = 5, dim = 2)
 
-H = hamiltonian(N = 1, spacing = 100, potential = harmonic_oscillator, extent = 15*Å, dim = 2)
-
-eigVal, eigVec = H.solve(max_state=30)
-
-print('Ground state energy: ', eigVal[0])
-print('Ground state: ', eigVec[0])
+eigVal, eigVec = H.solve(max_state=10)
+print(eigVal)
