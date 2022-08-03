@@ -24,7 +24,8 @@ def landau(particle):
     
     return -omega*Lz/2 + m/2*(omega/2)**2*coordTerm
 
-H = hamiltonian(N = 1, spacing = 100, potential = landau, extent = 5, dim = 2)
+H = hamiltonian(N = 1, spacing = 100, potential = landau, extent = 20*Å, dim = 2)
 
 eigVal, eigVec = H.solve(max_state=10)
-print(eigVal)
+
+print("Ground state energy:",eigVal[0])
