@@ -18,16 +18,6 @@ class single_particle:
         self.m = m
         self.spin = spin
 
-    def coord_space(self, H): #deprecated
-        if H.dim ==1:
-            self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            H.observable_count = 1
-
-        elif H.dim == 2:
-            x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            y = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            self.x, self.y = np.meshgrid(x,y)
-            
     def matrix_operators(self, H):
         H.ndim = 2
 
@@ -46,57 +36,18 @@ class single_particle:
         
         self.I = kron(I,I)
 
-        '''
-        if H.dim == 2:
-            #defining x and y coord
-            x_space = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            y_space = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-
-            #creating respective matrix
-            x = np.diag(x_space,0)
-            y = np.diag(y_space,0)
-
-            I = np.eye(H.spacing)
-
-            self.x = np.kron(I,x)
-            self.y = np.kron(y,I)
-            #print('x,y space defined...')
-
-            #delta matrix foundation
-            delta_matrix = (np.diag(np.ones(H.spacing-1),1) - np.diag(np.ones(H.spacing-1),-1))*1/(2*H.dx)
-
-            #print('delta matrix constructed')
-            
-            #x, y momentum operators (fin difference matrix)
-            self.px = np.kron(I, - hbar *1j * delta_matrix)
-            self.py = np.kron(- hbar *1j * delta_matrix, I)
-            #print('momentum matrix constructed')
-
-            self.I = np.kron(I,I)
-        '''
     def kinetic_term(self, H):
 
         I = eye(H.spacing)
-        T_ =  diags([-2., 1., 1.], [0,-1, 1] , shape=(H.spacing, H.spacing))*-0.5 /(self.m*H.dx**2)
+        T_ =  diags([-2., 1., 1.], [0,-1, 1] , shape=(H.spacing, H.spacing))* -0.5 /(self.m*H.dx**2)
         if H.dim ==1:
             T = T_
 
         elif H.dim==2:
             T =  kron(T_,I) + kron(I,T_)
         return T
-        """
-        I = np.eye(H.spacing)
-        T_temp = 0.5*hbar**2/(2*me) * (-np.diag(np.ones(H.spacing-1),-1)+2*np.diag(np.ones(H.spacing),0)+np.diag(np.ones(H.spacing-1),1))
+       
 
-        if H.dim == 1:
-            T = T_temp
-        
-        elif H.dim == 2:
-            T = np.kron(T_temp,I) + np.kron(I,T_temp)
-        """
-        return T
-            
-'''    
 class multi_particle:
     def __init__(self, m = me, spin = None):
 
@@ -107,15 +58,3 @@ class multi_particle:
 
         self.m = m
         self.spin = spin
-
-    def coord_space(self, H):
-        if H.dim ==1:
-            self.x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            H.observable_count = 1
-
-        elif H.dim == 2:
-            x = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            y = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-            self.x, self.y = np.meshgrid(x,y)
-            H.bservable_count = 2
-'''

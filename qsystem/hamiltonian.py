@@ -50,36 +50,18 @@ class hamiltonian:
 
         self.V = self.potential_term()
         #print('V matrix initialized...')
-        print(self.T)
-        print(self.V)
 
     def potential_term(self):
         V = self.potential(self.particle)
 
         return V
 
-    def displayH(self):
-        print(self.H)
+    def denseT(self):
+        return self.T.todense()
 
-    def M(self):
-        return(self.H)
+    def denseV(self):
+        return self.V.todense()
 
-    def solve(self, max_state):
-        H = self.T + self.V
-        print("Computing...")
-
-        t0 = time.time()
-
-        from scipy.sparse.linalg import eigsh
-
-        # Note: uses shift-invert trick for stability finding low-lying states
-        # Ref: https://docs.scipy.org/doc/scipy/reference/tutorial/arpack.html#shift-invert-mode
-
-        eigVal, eigVec = eigsh(H, k=max_state, which='LM', sigma=0.000409901839542372)
-
-        return eigVal, eigVec
-
-    """
     def solve(self, iteration):
         #args:
         #iteration (m): number of iterations to perform
@@ -94,8 +76,8 @@ class hamiltonian:
 
         #eigVal, eigVec = tri_eig_decompose(T)
         
-        eigVal, eigVec = eigsh(H, k = iteration)
+        eigVal, eigVec = eigsh(H, k=max_state, which='LM', sigma=0)
         print("Took", time.time() - t0)
         return eigVal, eigVec
-    """
+
 
