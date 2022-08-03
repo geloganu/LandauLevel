@@ -13,8 +13,8 @@ def harmonic_oscillator(particle):
 	return 0.5 * kx * particle.x**2    +    0.5 * ky * particle.y**2
 
 
-H = hamiltonian(N = 1, spacing = 100, potential = harmonic_oscillator, extent = 25, dim = 2)
+H = hamiltonian(N = 1, spacing = 100, potential = harmonic_oscillator, extent = 15*Å, dim = 2)
 
-v,w = H.solve(iteration = 15)
+v,w = H.solve(max_state = 30)
 
 print(v)

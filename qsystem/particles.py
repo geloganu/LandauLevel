@@ -67,7 +67,7 @@ class single_particle:
 
             #print('delta matrix constructed')
             
-            #x, y momentum operators (finite difference matrix)
+            #x, y momentum operators (fin difference matrix)
             self.px = np.kron(I, - hbar *1j * delta_matrix)
             self.py = np.kron(- hbar *1j * delta_matrix, I)
             #print('momentum matrix constructed')
