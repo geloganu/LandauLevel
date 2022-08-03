@@ -4,6 +4,7 @@ from particles import *
 from lanczos import *
 from scipy.sparse.linalg import eigsh
 
+
 import time
 
 
@@ -59,16 +60,26 @@ class hamiltonian:
 
     def displayH(self):
         print(self.H)
-    
-    def displayT(self):
-        print(self.T)
-
-    def displayV(self):
-        print(self.V)
 
     def M(self):
         return(self.H)
 
+    def solve(self, max_state):
+        H = self.T + self.V
+        print("Computing...")
+
+        t0 = time.time()
+
+        from scipy.sparse.linalg import eigsh
+
+        # Note: uses shift-invert trick for stability finding low-lying states
+        # Ref: https://docs.scipy.org/doc/scipy/reference/tutorial/arpack.html#shift-invert-mode
+
+        eigVal, eigVec = eigsh(H, k=max_state, which='LM', sigma=0.000409901839542372)
+
+        return eigVal, eigVec
+
+    """
     def solve(self, iteration):
         #args:
         #iteration (m): number of iterations to perform
@@ -77,13 +88,14 @@ class hamiltonian:
 
         t0 = time.time()
 
-        """
-        x = np.transpose(np.ones(self.spacing**2))
-        T, V = iterate(H, x, iteration)
+        
+        #x = np.transpose(np.ones(self.spacing**2))
+        #T, V = iterate(H, x, iteration)
 
-        eigVal, eigVec = tri_eig_decompose(T)
-        """
+        #eigVal, eigVec = tri_eig_decompose(T)
+        
         eigVal, eigVec = eigsh(H, k = iteration)
         print("Took", time.time() - t0)
         return eigVal, eigVec
+    """
 
