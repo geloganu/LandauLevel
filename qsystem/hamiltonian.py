@@ -3,6 +3,7 @@ from constants import *
 from particles import *
 from lanczos import *
 from scipy.sparse.linalg import eigsh
+from numpy import linalg
 
 
 import time
@@ -62,7 +63,7 @@ class hamiltonian:
     def denseV(self):
         return self.V.todense()
 
-    def solve(self, iteration):
+    def solve(self, max_state):
         #args:
         #iteration (m): number of iterations to perform
         H = self.T + self.V
@@ -76,7 +77,7 @@ class hamiltonian:
 
         #eigVal, eigVec = tri_eig_decompose(T)
         
-        eigVal, eigVec = eigsh(H, k=max_state, which='LM', sigma=0)
+        eigVal, eigVec = np.linalg.eigh(H)
         print("Took", time.time() - t0)
         return eigVal, eigVec
 
