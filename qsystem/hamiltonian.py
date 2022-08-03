@@ -3,7 +3,6 @@ from constants import *
 from particles import *
 from lanczos import *
 from scipy.sparse.linalg import eigsh
-from numpy import linalg
 
 
 import time
@@ -77,7 +76,7 @@ class hamiltonian:
 
         #eigVal, eigVec = tri_eig_decompose(T)
         
-        eigVal, eigVec = np.linalg.eigh(H)
+        eigVal, eigVec = eigsh(H, k = max_state, which = 'LM', sigma = 0)
         print("Took", time.time() - t0)
         return eigVal, eigVec
 

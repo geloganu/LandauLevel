@@ -18,6 +18,7 @@ c = 2.99792458e8
 
 # conversion constants to atomic units
 
+
 hbar = 1.0
 me = 1.0
 a_0 = 1.0
@@ -48,7 +49,7 @@ A = 150.974884744557
 
 # some physical constants, expressed in atomic units
 
-k = 0.5 # hbar**2 / (2*m_e) 
+k = 0.5 * hbar**2 / (2*me) 
 m_p = 1836.1526734400013
 𝜇0 = 0.0006691762566207213
 ε0 = 0.0795774715459477 
