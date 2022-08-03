@@ -50,11 +50,12 @@ class single_particle:
 
 class multi_particle:
     def __init__(self, m = me, spin = None):
-
+        """
+        args:
         N: number of particles (for N != 1)
         m: mass of electron set to %me by default
         spin: set to 'None' if spin polarized
-
+        """
 
         self.m = m
         self.spin = spin
