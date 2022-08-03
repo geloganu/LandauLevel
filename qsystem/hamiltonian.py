@@ -52,6 +52,9 @@ class hamiltonian:
         self.V = self.potential_term()
         #print('V matrix initialized...')
 
+        print('Hamiltonian constructed...')
+        print('--------------------------')
+
     def potential_term(self):
         V = self.potential(self.particle)
 
@@ -70,7 +73,7 @@ class hamiltonian:
         #args:
         #iteration (m): number of iterations to perform
         H = self.T + self.V
-        #print("Hamiltonian constructed...")
+        print("Hamiltonian constructed...")
 
         t0 = time.time()
 
@@ -81,7 +84,7 @@ class hamiltonian:
         #eigVal, eigVec = tri_eig_decompose(T)
         
         eigVal, eigVec = eigsh(H, k = max_state, which = 'LM', sigma = 0)
-        print("Took", time.time() - t0)
+        print("Diagonalization took ", time.time() - t0," seconds")
 
         #normalizing
         return eigVal/eV, eigVec/np.sqrt(self.dx**self.dim)
