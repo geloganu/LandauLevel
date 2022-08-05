@@ -37,10 +37,12 @@ class hamiltonian:
         if dim not in range(1,3,1):
             raise Exception('Dimension must be either 1, 2 or 3')
         
-        #if N == 1:
-        self.particle = single_particle()
-        #elif N == 2:
-        #    self.particle = multi_particle
+        if N == 1:
+            self.particle = single_particle()
+        elif N == 2:
+            self.particle = two_particle()
+        else:
+            print('Particle systems larger than N = 2 not supported.')
         #print('Particle system defined...')
 
         self.particle.matrix_operators(self)
