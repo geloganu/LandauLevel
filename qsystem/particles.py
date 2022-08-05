@@ -48,16 +48,30 @@ class single_particle:
         return T
        
 
-class multi_particle:
-    def __init__(self, m = me, spin = None):
+class two_particle:
+    def __init__(self, m = me, spin = None,  N = 2):
         """
         args:
-        N: number of particles (for N != 1)
+        N: number of particles (for N != 1) for now N = 2
         m: mass of electron set to %me by default
         spin: set to 'None' if spin polarized
         """
-
+        self.N = N 
         self.m = m
         self.spin = spin
-
     
+    def matrix_operators(self, H):
+        H.ndim = 4
+        
+        x1 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+        y1 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+        x2 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+        y2 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
+        self.x1, self.y1, self.x2, self.y2 = np.meshgrid(x1, y1, x2, y2)
+
+        
+        
+
+
+    def cart_coord(self, H):
+        pass
