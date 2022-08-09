@@ -4,7 +4,7 @@ from constants import *
 from scipy.sparse import diags
 from scipy.sparse import kron
 from scipy.sparse import eye
-
+import scipy
 #particle builder for hamiltonian builder
 
 #single particle case N=1
@@ -80,12 +80,15 @@ class two_particle:
         self.y2 = kron(Identity,kron(I,y2))
 
         #r1, r2 vectors and (inv) seperation vector
-        self.r1 = (x1**2+y1**2)
-        self.r2 = (x2**2+y2**2)
-        self.rsep = r1 - r2
-        self.rsep_inv = np.abs(np.reciprocal(rsep.data, out=rsep.data))
+        self.r1 = (self.x1**2+self.y1**2)
+        self.r2 = (self.x2**2+self.y2**2)
+        self.rsep = (self.r1 - self.r2).A
 
-        diff_matrix = - hbar *1j * diags([-1., 0., 1.], [-1, 0, 1] , shape=(spacing, spacing))*1/(2*dx)
+        np.seterr(divide='ignore')
+        TOL = 0.00001
+        self.rsep_inv = np.abs(np.where(self.rsep < TOL, 0, 1./self.rsep))
+
+        diff_matrix = - hbar *1j * diags([-1., 0., 1.], [-1, 0, 1] , shape=(H.spacing, H.spacing))*1/(2*H.dx)
 
         self.px1 = kron(kron(diff_matrix,I),Identity)
         self.py1 = kron(kron(I,diff_matrix),Identity)

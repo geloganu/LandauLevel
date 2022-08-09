@@ -38,21 +38,24 @@ def two_particle_landau(particle):
     omega = e*B/2*m
 
     #x^2 + y^2
-    coord_term = 1/2 * m * omega**2 * (r1**2 + r2**2)
-    
+    coord_term = 1/2 * m * omega**2 * (particle.r1**2 + particle.r2**2)
+    print(coord_term.shape)
+
+
     #angular momentum term
     Lz1 = -1j * hbar * (-particle.px1 @ particle.y1 + particle.py1 @ particle.x1)
     Lz2 = -1j * hbar * (-particle.px2 @ particle.y2 + particle.py2 @ particle.x2)
-    angm_term = - omega * (Lz1+Lz2)
     
+    angm_term = - omega * (Lz1+Lz2)
+    print(angm_term.shape)
     #coulomb interaction term
     k = e
-    coulomb_term = k * rsep_inv
-
-    return coord_term + angm_term + coulomb_term
+    coulomb_term = k * particle.rsep_inv
 
 
-H = hamiltonian(N = 2, spacing = 50, potential = two_particle_landau, extent = 20*Å, dim = 2)
+    return coord_term + angm_term
+
+H = hamiltonian(N = 2, spacing = 25, potential = two_particle_landau, extent = 20*Å, dim = 2)
 
 #eigVal, eigVec = H.solve(max_state=10)
 
