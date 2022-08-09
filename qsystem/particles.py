@@ -64,10 +64,10 @@ class two_particle:
         H.ndim = 4
 
         #cartesian coord space
-        x1 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
-        y1 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
-        x2 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
-        y2 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
+        x1 = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
+        y1 = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
+        x2 = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
+        y2 = diags([np.linspace(-H.extent/2, H.extent/2, H.spacing)], [0])
 
         #identity matrices
         I = eye(H.spacing)
