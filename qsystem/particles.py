@@ -62,16 +62,45 @@ class two_particle:
     
     def matrix_operators(self, H):
         H.ndim = 4
-        
-        x1 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-        y1 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-        x2 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-        y2 = np.linspace(-H.extent/2, H.extent/2, H.spacing)
-        self.x1, self.y1, self.x2, self.y2 = np.meshgrid(x1, y1, x2, y2)
 
-        
-        
+        #cartesian coord space
+        x1 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
+        y1 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
+        x2 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
+        y2 = diags([np.linspace(H.-extent/2, H.extent/2, H.spacing)], [0])
 
+        #identity matrices
+        I = eye(H.spacing)
+        Identity = kron(I,I)
 
-    def cart_coord(self, H):
-        pass
+        #cartesian coord space in hilber space
+        self.x1 = kron(kron(x1,I),Identity)
+        self.y1 = kron(kron(I,y1),Identity)
+        self.x2 = kron(Identity,kron(x2,I))
+        self.y2 = kron(Identity,kron(I,y2))
+
+        #r1, r2 vectors and (inv) seperation vector
+        self.r1 = (x1**2+y1**2)
+        self.r2 = (x2**2+y2**2)
+        self.rsep = r1 - r2
+        self.rsep_inv = np.abs(np.reciprocal(rsep.data, out=rsep.data))
+
+        diff_matrix = - hbar *1j * diags([-1., 0., 1.], [-1, 0, 1] , shape=(spacing, spacing))*1/(2*dx)
+
+        self.px1 = kron(kron(diff_matrix,I),Identity)
+        self.py1 = kron(kron(I,diff_matrix),Identity)
+        self.px2 = kron(Identity,kron(diff_matrix,I))
+        self.py2 = kron(Identity,kron(I,diff_matrix))
+
+        self.I = kron(Identity,Identity)
+
+    def kinetic_term(self, H):
+
+        I = eye(H.spacing)
+        Identity = kron(I,I)
+
+        T_ =  diags([-2., 1., 1.], [0,-1, 1] , shape=(H.spacing, H.spacing))* -0.5 /(self.m*H.dx**2)
+
+        T = kron(kron(T_,I),Identity) + kron(kron(I,T_),Identity) + kron(Identity, kron(T_,I)) + kron(Identity, kron(I,T_))
+        
+        return T
