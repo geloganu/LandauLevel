@@ -73,21 +73,13 @@ class two_particle:
         I = eye(H.spacing)
         Identity = kron(I,I)
 
-        #cartesian coord space in hilber space
+        #cartesian coord space in hilbert space
         self.x1 = kron(kron(x1,I),Identity)
         self.y1 = kron(kron(I,y1),Identity)
         self.x2 = kron(Identity,kron(x2,I))
         self.y2 = kron(Identity,kron(I,y2))
 
-        #r1, r2 vectors and (inv) seperation vector
-        self.r1 = (self.x1**2+self.y1**2)
-        self.r2 = (self.x2**2+self.y2**2)
-        self.rsep = (self.r1 - self.r2).A
-
-        np.seterr(divide='ignore')
-        TOL = 0.00001
-        self.rsep_inv = np.abs(np.where(self.rsep < TOL, 0, 1./self.rsep))
-
+        #momentum operator matrix template
         diff_matrix = - hbar *1j * diags([-1., 0., 1.], [-1, 0, 1] , shape=(H.spacing, H.spacing))*1/(2*H.dx)
 
         self.px1 = kron(kron(diff_matrix,I),Identity)
@@ -95,7 +87,24 @@ class two_particle:
         self.px2 = kron(Identity,kron(diff_matrix,I))
         self.py2 = kron(Identity,kron(I,diff_matrix))
 
+        #seperation coordinate space
+        xx1, yy1, xx2 , yy2  = np.mgrid[ -H.extent/2: H.extent/2:H.spacing*1j, -H.extent/2: H.extent/2:H.spacing*1j, -H.extent/2: H.extent/2:H.spacing*1j, -H.extent/2: H.extent/2:H.spacing*1j]
+
+        r1 = np.sqrt(xx1**2+yy1**2)
+        r2 = np.sqrt(xx2**2+yy2**2)
+
+        TOL = 0.0001
+        rsep = np.abs(r1 - r2)
+        rsep_inv = np.where(rsep < TOL, 1/TOL, 1/rsep)
+
+        self.r1 = diags([r1.reshape(H.spacing ** H.ndim)],[0])
+        self.r2 = diags([r2.reshape(H.spacing ** H.ndim)],[0])
+        self.rsep = diags([rsep.reshape(H.spacing ** H.ndim)], [0])   
+        self.rsep_inv = diags([rsep_inv.reshape(H.spacing ** H.ndim)], [0])   
+
         self.I = kron(Identity,Identity)
+        
+
 
     def kinetic_term(self, H):
 
@@ -107,3 +116,4 @@ class two_particle:
         T = kron(kron(T_,I),Identity) + kron(kron(I,T_),Identity) + kron(Identity, kron(T_,I)) + kron(Identity, kron(I,T_))
         
         return T
+
