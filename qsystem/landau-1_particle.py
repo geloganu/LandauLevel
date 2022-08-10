@@ -53,6 +53,6 @@ def two_particle_landau(particle):
 
     return coord_term + angm_term + coulomb_term
 
-H = hamiltonian(N = 2, spacing = 5, potential = two_particle_landau, extent = 20*Å, dim = 2)
+H = hamiltonian(N = 2, spacing = 50, potential = two_particle_landau, extent = 20*Å, dim = 2)
 eigVal, eigVec = H.solve(max_state=30)
 print(eigVal)
